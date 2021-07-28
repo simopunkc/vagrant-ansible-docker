@@ -1,8 +1,8 @@
 ## Requirements
-vagrant
-ansible
+vagrant  
+ansible  
 docker  
 
 ## Usage
-docker pull debian
-vagrant up
+docker pull debian  
+vagrant up  
