@@ -1,0 +1,26 @@
+Vagrant.configure("2") do |config|
+  config.vm.synced_folder "/vagrant", "/data"
+  config.vm.synced_folder "/vagrant/app", "/app"
+  config.vm.boot_timeout = 1440
+  config.ssh.username = "vagrant"
+  config.ssh.private_key_path = "vagrant.priv"
+  config.ssh.forward_agent = true
+  N = 3
+  (1..N).each do |cpu_id|
+    config.vm.define "u#{cpu_id}" do |cpuc|
+      cpuc.vm.hostname = "u#{cpu_id}"
+      config.vm.provider "docker" do |d|
+        d.build_dir = "."
+        d.dockerfile = "Dockerfile"
+        d.remains_running = true
+        d.has_ssh = true
+      end
+      if cpu_id == N
+        config.vm.provision :ansible do |ansible|
+          ansible.limit = "all"
+          ansible.playbook = "playbook.yml"
+        end
+      end
+    end
+  end
+end
