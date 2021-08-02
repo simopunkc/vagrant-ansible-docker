@@ -1,2 +1,3 @@
+.gitignore
 multi-container/.vagrant
 single-container/.vagrant
